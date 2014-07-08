@@ -85,10 +85,10 @@ axis(1, seq(0,floor(num_months/12)*12,by=12), labels=rep("", floor(num_months/12
 mtext(1996+1:floor(num_months/12), side=1, at = (1:floor(num_months/12))*12 - 6, line=0.5, cex=0.5)
 box()
 
-barplot(ob_weeks)
+barplot(ob_weeks,cex.names=0.8)
 
-# plot finer-grained total cases per week since 2009
-rows <- notification_weeks > "2008-12-31"
+# plot finer-grained total cases per week
+rows <- notification_weeks > "2000-01-31"
 
 weeks_2007 <- notification_weeks[rows]
 outbreaks_2007 <- all[rows,outbreak_code_col]
@@ -103,9 +103,9 @@ cols <- c("grey20", rainbow(nrow(ob_weeks)-1))
 barplot(ob_weeks, col=cols, border=NA, space=0, xaxt="n", ylim=c(0,25), ylab="Cases per week")
 
 # figure out years...
-years <- as.numeric((as.Date(paste(2009:2015, "-01-01", sep="")) - ob_range[1]) / 7)
+years <- as.numeric((as.Date(paste(2000:2015, "-01-01", sep="")) - ob_range[1]) / 7)
 axis(1, at=years, labels=rep("", length(years)), line=0.5)
-mtext(2009:2014, side=1, at = years[-length(years)] + diff(years)/2, line=1.2)
+mtext(2000:2014, side=1, at = years[-length(years)] + diff(years)/2, line=1.2,cex=0.5)
 
 # combine 'outbreaks' with fewer than 10 cases into one semi-sporadic column
 weeks_2009 <- notification_weeks[rows]
@@ -184,3 +184,4 @@ for (ob_num in outbreak_nos)
   outbreak_file <- file.path(output_dir, sprintf("outbreak%02d.csv", ob_num))
   write.csv(outbreak_data, outbreak_file, row.names=F)
 }
+
