@@ -11,6 +11,8 @@ outbreak_code_col <- "Outbrk"
 date_col          <- "reportdate"
 date_format       <- "%d-%B-%y"
 
+
+
 # output folder to create
 output_dir        <- "outbreaks"
 
