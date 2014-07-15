@@ -1,7 +1,8 @@
+rm(list=ls())
 ## Daves notes
 # compute generation time.  We're wanting a lognormal distribution with mean 12.0 and sd 3.5 from
 # http://www.sciencedirect.com/science/article/pii/S0022519311003146
-mu    <- 6
+mu    <- 12
 sigma <- 3.5
 sigma_logn <- sqrt(log(1 + (sigma/mu)^2))
 mu_logn    <- log(mu) - log(1 + (sigma/mu)^2) / 2
@@ -38,10 +39,11 @@ alpha <- function(col, a)
   else
     rgb(t(col2rgb(col)/255), alpha=a)
 }
-cols <- rainbow(length(average_R0))
 
 # do the separate analyses
 average_R0 <- list()
+cols <- rainbow(length(average_R0))
+
 for (i in 1:length(outbreak_files))
 {
   ob_file <- outbreak_files[i]
@@ -81,16 +83,16 @@ for (i in 1:length(outbreak_files))
   incl_month <- months+10 >= min(date_range) & months+20 < max(date_range)
   incl_year <- years >= min(date_range) & years < max(date_range)
 
-  if (sum(incl_month) < 10) {
-    mtext(month_lab_long[month_lab[incl_month]], side=1, at = months[incl_month] + 15, line=0.25)
-  } else {
-    mtext(month_lab_short[month_lab[incl_month]], side=1, at = months[incl_month] + 15, line=0.25)
-  }
-  if (sum(incl_year))
-  {
-    mtext(format.Date(years[incl_year], "%Y"), side=1, at = years[incl_year], line=1.5, adj=-0.25)
-    mtext(as.numeric(format.Date(years[incl_year], "%Y"))-1, side=1, at = years[incl_year], line=1.5, adj=1.25)
-  }
+#  if (sum(incl_month) < 10) {
+#    mtext(month_lab_long[month_lab[incl_month]], side=1, at = months[incl_month] + 15, line=0.25)
+#  } else {
+ #   mtext(month_lab_short[month_lab[incl_month]], side=1, at = months[incl_month] + 15, line=0.25)
+ # }
+#  if (sum(incl_year))
+#  {
+ #   mtext(format.Date(years[incl_year], "%Y"), side=1, at = years[incl_year], line=1.5, adj=-0.25)
+#    mtext(as.numeric(format.Date(years[incl_year], "%Y"))-1, side=1, at = years[incl_year], line=1.5, adj=1.25)
+#  }
 
   
   average_R0[[length(average_R0)+1]] <- estR0$R0
@@ -107,13 +109,26 @@ my_vioplot <- function(dat, bw, border, col, at)
   polygon(c(at-e$y[incl]*m,rev(at+e$y[incl]*m)), c(e$x[incl], rev(e$x[incl])), col=col, border=border)
 }
 
-range_R0 <- range(sapply(average_R0, range))
-plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=range_R0 + diff(range_R0)*0.05*c(-1,1), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
+#pdf("averageR0.pdf", width=8, height=6)
+#range_R0 <- range(sapply(average_R0, range))
+#plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=range_R0 + diff(range_R0)*0.05*c(-1,1), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
+plot(NULL, xlim=c(0.5,3.5), ylim=c(0.3,1.2), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
+
 for (i in 1:length(average_R0))
-  my_vioplot(average_R0[[i]], bw=0.015, border=cols[i], col=cols[i], at=i)
+  my_vioplot(average_R0[[i]], bw=0.015, border=1:5, col=c(1:5), at=i)
 abline(h=1, col="black")
 
 #labels <- c("Early 2009", "Late 2009", "2010", "2011/12", "2014")
-axis(side=1, at=1:5, labels=labels)
+#axis(side=1, at=1:5, labels=labels)
+dev.off()
 
 
+##
+library(vioplot)
+hist(average_R0[[1]])
+
+plot(NULL, xlim=c(-20,20), ylim=c(-10,30), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
+plot(NULL, xlim=c(0,1.2), ylim=c(-0.5,1.5))
+for (i in 1:length(average_R0))
+  vioplot(average_R0[[i]],col=c(1,2,3,4,5,6,7,8,9,10), horizontal=TRUE, at=0, add=TRUE,lty=2, rectCol="blue")
+abline(h=1, col="black")
