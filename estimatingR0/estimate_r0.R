@@ -98,7 +98,7 @@ for (i in 1:length(outbreak_files))
   average_R0[[length(average_R0)+1]] <- estR0$R0
 }
 
-
+cols<- rainbow(length(average_R0))
 # plot R0 averages
 
 my_vioplot <- function(dat, bw, border, col, at)
@@ -112,23 +112,11 @@ my_vioplot <- function(dat, bw, border, col, at)
 #pdf("averageR0.pdf", width=8, height=6)
 #range_R0 <- range(sapply(average_R0, range))
 #plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=range_R0 + diff(range_R0)*0.05*c(-1,1), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
-plot(NULL, xlim=c(0.5,3.5), ylim=c(0.3,1.2), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
+plot(NULL, xlim=c(0.5,7.5), ylim=c(0,2.2), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
 
 for (i in 1:length(average_R0))
-  my_vioplot(average_R0[[i]], bw=0.015, border=1:5, col=c(1:5), at=i)
+  my_vioplot(average_R0[[i]], bw=0.015, border=1:7, col=cols[i], at=i)
 abline(h=1, col="black")
 
-#labels <- c("Early 2009", "Late 2009", "2010", "2011/12", "2014")
-#axis(side=1, at=1:5, labels=labels)
-dev.off()
-
-
-##
-library(vioplot)
-hist(average_R0[[1]])
-
-plot(NULL, xlim=c(-20,20), ylim=c(-10,30), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
-plot(NULL, xlim=c(0,1.2), ylim=c(-0.5,1.5))
-for (i in 1:length(average_R0))
-  vioplot(average_R0[[i]],col=c(1,2,3,4,5,6,7,8,9,10), horizontal=TRUE, at=0, add=TRUE,lty=2, rectCol="blue")
-abline(h=1, col="black")
+labels <- c("1979", "1994", "1995", "1996", "2000","2007","2014")
+axis(side=1, at=1:7, labels=labels)
