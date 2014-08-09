@@ -1,6 +1,9 @@
 ## import data
 
 all <- read.csv("EbolaDataDTSH.csv")
+all <- read.csv("EbolaDataDTSHepi.csv")
+all <- read.csv("EbolaDataDTSHwho.csv")
+
 all$Date <- as.Date(all$Date,format="%d/%m/%Y")
 str(all)
 library(xts)
@@ -67,9 +70,11 @@ names(tt)<-c("date","outbreak","incidence")
 tt$outbreak<-as.factor(tt$outbreak)
 library(plyr)
 tt<-tt[order(tt$date),]
-oldob=c("0","16","18","17","1","8","15")
-newob=c("1","2","3","4","5","6","7")
-tt$outbreak <- newob[ match(tt$outbreak, oldob) ]
+# for the epi work only - double check the #s
+ oldob=c("0","16","18","17","1","8")
+ newob=c("1","2","3","4","5","6")
+ tt$outbreak <- newob[ match(tt$outbreak, oldob) ]
+
 tt$date<-as.Date(tt[,1])#, format=date_format)
 
 for (i in 1:length(unique(tt$outbreak)))
@@ -84,7 +89,8 @@ for (i in 1:length(unique(tt$outbreak)))
 
 library(ggplot2)
 library(scales) # to access breaks/formatting functions
-cols<- rainbow(length(average_R0))
+
+cols<- rainbow(length(unique(tt$outbreak)))
 ## nb notification_weeks is a factor and the below plot works with that, but not a time series
 #d<-list() # this doesn't work - do by hand
 #for (i in 1:length(unique(tt$outbreak))){
@@ -98,44 +104,94 @@ library(scales) # to access breaks/formatting functions
 d1<-ggplot(subset(tt,(outbreak=="1")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[1])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d1 <-d1 + scale_x_date(breaks = date_breaks("months"),
-                       labels = date_format("%b"))+ggtitle("1979")
+                       labels = date_format("%b"))+ggtitle("")
 
 d2<-ggplot(subset(tt,(outbreak=="2")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[2])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d2 <-d2 + scale_x_date(breaks = date_breaks("months"),
-                       labels = date_format("%b"))+ggtitle("1994")
+                       labels = date_format("%b"))+ggtitle("")
 
 d3<-ggplot(subset(tt,(outbreak=="3")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[3])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d3 <-d3 + scale_x_date(breaks = date_breaks("months"),
-                       labels = date_format("%b"))+ggtitle("1995")
+                       labels = date_format("%b"))+ggtitle("")
 
 d4<-ggplot(subset(tt,(outbreak=="4")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[4])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d4 <-d4 + scale_x_date(breaks = date_breaks("months"),
-                       labels = date_format("%b"))+ggtitle("1996")
+                       labels = date_format("%b"))+ggtitle("")
 
 d5<-ggplot(subset(tt,(outbreak=="5")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[5])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d5 <-d5 + scale_x_date(breaks = date_breaks("months"),
-                       labels = date_format("%b"))+ggtitle("2000")
+                       labels = date_format("%b"))+ggtitle("")
 
 d6<-ggplot(subset(tt,(outbreak=="6")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[6])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d6 <-d6 + scale_x_date(breaks = date_breaks("months"),
-                       labels = date_format("%b"))+ggtitle("2007")
+                       labels = date_format("%b"))+ggtitle("")
 
 d7<-ggplot(subset(tt,(outbreak=="7")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[7])+
   geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
 d7 <-d7+ scale_x_date(breaks = date_breaks("months"),
-                      labels = date_format("%b"))+ggtitle("2014")
+                      labels = date_format("%b"))+ggtitle("")
 
+d8<-ggplot(subset(tt,(outbreak=="8")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[8])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d8 <-d8 + scale_x_date(breaks = date_breaks("months"),
+                       labels = date_format("%b"))+ggtitle("")
+
+d9<-ggplot(subset(tt,(outbreak=="9")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[9])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d9 <-d9 + scale_x_date(breaks = date_breaks("months"),
+                       labels = date_format("%b"))+ggtitle("")
+
+d10<-ggplot(subset(tt,(outbreak=="10")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[10])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d10 <-d10 + scale_x_date(breaks = date_breaks("months"),
+                       labels = date_format("%b"))+ggtitle("")
+
+d11<-ggplot(subset(tt,(outbreak=="11")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[11])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d11 <-d11 + scale_x_date(breaks = date_breaks("months"),
+                       labels = date_format("%b"))+ggtitle("")
+
+d12<-ggplot(subset(tt,(outbreak=="12")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[12])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d12 <-d12 + scale_x_date(breaks = date_breaks("months"),
+                       labels = date_format("%b"))+ggtitle("")
+
+d13<-ggplot(subset(tt,(outbreak=="13")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[13])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d13 <-d13 + scale_x_date(breaks = date_breaks("months"),
+                       labels = date_format("%b"))+ggtitle("")
+
+d14<-ggplot(subset(tt,(outbreak=="14")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[14])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d14 <-d14+ scale_x_date(breaks = date_breaks("months"),
+                      labels = date_format("%b"))+ggtitle("")
+
+d15<-ggplot(subset(tt,(outbreak=="15")), aes(x=date, y=incidence,fill=factor(outbreak))) +scale_fill_manual(values=cols[15])+
+  geom_bar(stat="identity")+guides(fill=F)+ylim(c(0,max(tt$incidence)))
+d15 <-d15+ scale_x_date(breaks = date_breaks("months"),
+                        labels = date_format("%b"))+ggtitle("2014")
 library(ggplot2)
 library(grid)
 library(gridExtra)
 height<-as.numeric(max(tt$incidence))
 
 width<-as.numeric(colSums(table(tt$date,tt$outbreak)))
-width[4]<-9
+## for the epi
+## width[4]<-9
 width/sum(width)
-grid.arrange(d1, d2, d3, d4, d5 ,d6 ,d7,ncol=7,widths=width)
+## adjust for each data set
+# grid.arrange(d1, d2, d3, d4, d5 ,d6 ,d7,ncol=7,widths=width)
+grid.arrange(d1, d2, d3, d4, ncol=4,widths=width[1:4])
+grid.arrange(d5 ,d6 ,d7, d8, ncol=4,widths=width[5:8])
+grid.arrange(d9, d10, d11, d12, ncol=4,widths=width[9:12])
+grid.arrange(d13, d14, d15, ncol=4,widths=width[13:15])
+
+ggplot(tt, aes(x=date, y=incidence,fill=outbreak)
+               ) + geom_bar(stat="identity")+
+  theme(legend.position="none")
+

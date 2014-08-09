@@ -55,47 +55,29 @@ for (i in 1:length(outbreak_files))
 
   # if we have too long gaps in the data we'll need to strip it out
 
-#  counts <- counts[1:51]
-#  estR0<-estimate.R(counts, genTime, t=1:51, methods=c("EG", "ML", "TD", "AR", "SB"), pop.size=1300000, nsim=100)
-#  estR0<-estimate.R(counts, genTime, t=1:51, end=51, methods=c("EG"), pop.size=1300000, nsim=100)
-#  estR0<-estimate.R(counts, genTime, t=1:51, end=51, methods=c("ML"), pop.size=1300000, nsim=100)
-#  estR0<-estimate.R(counts, genTime, t=1:51, end=51, methods=c("TD"), pop.size=1300000, nsim=100)
-#  estR0<-estimate.R(counts, genTime, t=1:51, end=51, methods=c("SB"), pop.size=1300000, nsim=100)
-
   # add dates....
   estR0<-jm_estR0(counts, genTime, t=1:length(counts), end=length(counts), methods=c("TD"), nsim=1000)
 
-  months <- as.Date(as.vector(t(outer(2009:2015,1:12,function(x,y) { sprintf("%04d-%02d-01", x, y) }))))
-  month_lab_short <- c("J","F","M","A","M","J","J","A","S","O","N","D")
-  month_lab_long  <- months(as.Date(sprintf("2005-%02d-01", 1:12)), T)
-  month_lab <- rep(1:12,6)
-  years  <- as.Date(sprintf("%04d-01-01", 2009:2015))
+#  months <- as.Date(as.vector(t(outer(2009:2015,1:12,function(x,y) { sprintf("%04d-%02d-01", x, y) }))))
+#  month_lab_short <- c("J","F","M","A","M","J","J","A","S","O","N","D")
+#  month_lab_long  <- months(as.Date(sprintf("2005-%02d-01", 1:12)), T)
+#  month_lab <- rep(1:12,6)
+#  years  <- as.Date(sprintf("%04d-01-01", 2009:2015))
 
-  date_range <- as.Date(as.character(incidence$date))
+#  date_range <- as.Date(as.character(incidence$date))
   # plot...
-  plot(NULL, xlim=range(date_range), ylim=range(estR0$conf.int), ylab="R0", xaxt="n", xlab="")
-  polygon(c(date_range,rev(date_range)), c(estR0$conf.int[,1], rev(estR0$conf.int[,2])), col=alpha(cols[i], 0.5), border=NA)
-  lines(date_range, estR0$R, lwd=2, col=cols[i])
-  abline(h=1)
-  axis(1, at=months, labels=rep("",length(months)))
-  axis(1, at=years, labels=rep("",length(years)), tcl=-2.5, lwd.ticks=1.5)
+#  plot(NULL, xlim=range(date_range), ylim=range(estR0$conf.int), ylab="R0", xaxt="n", xlab="")
+#  polygon(c(date_range,rev(date_range)), c(estR0$conf.int[,1], rev(estR0$conf.int[,2])), col=alpha(cols[i], 0.5), border=NA)
+#  lines(date_range, estR0$R, lwd=2, col=cols[i])
+#  abline(h=1)
+#  axis(1, at=months, labels=rep("",length(months)))
+#  axis(1, at=years, labels=rep("",length(years)), tcl=-2.5, lwd.ticks=1.5)
 
-  incl_month <- months+10 >= min(date_range) & months+20 < max(date_range)
-  incl_year <- years >= min(date_range) & years < max(date_range)
-
-#  if (sum(incl_month) < 10) {
-#    mtext(month_lab_long[month_lab[incl_month]], side=1, at = months[incl_month] + 15, line=0.25)
-#  } else {
- #   mtext(month_lab_short[month_lab[incl_month]], side=1, at = months[incl_month] + 15, line=0.25)
- # }
-#  if (sum(incl_year))
-#  {
- #   mtext(format.Date(years[incl_year], "%Y"), side=1, at = years[incl_year], line=1.5, adj=-0.25)
-#    mtext(as.numeric(format.Date(years[incl_year], "%Y"))-1, side=1, at = years[incl_year], line=1.5, adj=1.25)
-#  }
-
+#  incl_month <- months+10 >= min(date_range) & months+20 < max(date_range)
+#  incl_year <- years >= min(date_range) & years < max(date_range)
   
   average_R0[[length(average_R0)+1]] <- estR0$R0
+  names(average_R0)[[i]]<-i
 }
 
 cols<- rainbow(length(average_R0))
@@ -112,11 +94,27 @@ my_vioplot <- function(dat, bw, border, col, at)
 #pdf("averageR0.pdf", width=8, height=6)
 #range_R0 <- range(sapply(average_R0, range))
 #plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=range_R0 + diff(range_R0)*0.05*c(-1,1), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
-plot(NULL, xlim=c(0.5,7.5), ylim=c(0,2.2), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
+# alter as necessary...
+plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=c(0,max(average_R0[[i]])+0.5), ylab="Average R-effective", xlab="First recorded case", xaxt="n", yaxs="i")
 
 for (i in 1:length(average_R0))
   my_vioplot(average_R0[[i]], bw=0.015, border=1:7, col=cols[i], at=i)
 abline(h=1, col="black")
 
-labels <- c("1979", "1994", "1995", "1996", "2000","2007","2014")
-axis(side=1, at=1:7, labels=labels)
+min_dates <- rep("", length(outbreak_files))
+for (i in 1:length(outbreak_files))
+{
+  incidence <- read.csv(file.path(outbreak_folder, outbreak_files[i]), stringsAsFactors=F)
+  min_dates[i] <- min(incidence$date)
+}
+min_dates
+
+labs <- as.Date(min_dates)
+labs<-format(labs,
+       "%b %y")
+labels <- c(as.character(labs))
+axis(1,at=seq(1, length(average_R0), by=1), labels = labels)
+# for 15 ...
+axis(1,at=seq(1, length(average_R0), by=1), labels = F)
+text(1:length(average_R0), par("usr")[1], labels=labels, srt=45, pos=1, xpd=TRUE,cex=0.5)
+
