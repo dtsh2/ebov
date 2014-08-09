@@ -35,27 +35,25 @@ abline(0,1) ## drawing a 45-degree reference line
 res2<-as.matrix(res1,nrow=1)
 library(fitdistrplus)
 ## Fit a log-normal distribution to the 50 random data set
-f <- apply(res2, 2,  fitdist, "lnorm")
-
+# flnorm <- apply(res2, 2,  fitdist, "lnorm")
+lnfit<-fitdist(res1,distr="lnorm")
 ## Plot the results 
+lnfit$aic
+summary(lnfit)
+#plot(flnorm[[1]])
+plot(lnfit)
 
-  plot(f[[1]])
-
-f <- apply(res2, 2,  fitdist, "norm")
-
+gamfit<-fitdist(res1,distr="gamma")
 ## Plot the results 
+gamfit$aic
+summary(gamfit)
+plot(gamfit)
 
-plot(f[[1]])
-
-f <- apply(res2, 2,  fitdist, "gamma")
-
+nfit<-fitdist(res1,distr="norm")
 ## Plot the results 
+nfit$aic
+summary(nfit)
+plot(nfit)
 
-plot(f[[1]])
-f
-# compute generation time.  We're wanting a lognormal distribution with mean 12.0 and sd 3.5 from
-mu    <- 12
-sigma <- 3.5
-sigma_logn <- sqrt(log(1 + (sigma/mu)^2))
-mu_logn    <- log(mu) - log(1 + (sigma/mu)^2) / 2
-
+samples<-(rgamma(100,shape=gamfit$estimate[1],rate=gamfit$estimate[2]))
+hist(samples)

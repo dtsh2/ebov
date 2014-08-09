@@ -14,8 +14,25 @@ require(R0)
 source("estR0.R")
 
 # generation time in weeks
+# if like measles
 genTime <- generation.time(type="lognormal", val=c(6, 3.5)/7)
+# if using dave's dodgy estimates from ebov data
+k =gamfit$estimate[1] # shape
+ theta = gamfit$estimate[2] # rate
+ beta = 1/theta # scale
+gmean =k/beta # mean
+# variancegam<- k * beta^2
+# sdgam<-variancegam^2
+genTime<-generation.time(type="gamma",c(mean=gmean,sd=k^2))
+plot(genTime,xlim=c(0,20))
+## seems wrong - discuss with JM
 
+sigma_logn <-lnfit$estimate[2]
+mu_logn    <-lnfit$estimate[1]
+
+genTime <- generation.time(type="lognormal", val=c(mean=mu_logn,sd=sigma_logn))
+plot(genTime)
+                           
 # read out outbreak folder
 outbreak_folder <- "outbreaks"
 
@@ -95,7 +112,7 @@ my_vioplot <- function(dat, bw, border, col, at)
 #range_R0 <- range(sapply(average_R0, range))
 #plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=range_R0 + diff(range_R0)*0.05*c(-1,1), ylab="Average R0", xlab="", xaxt="n", yaxs="i")
 # alter as necessary...
-plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=c(0,max(average_R0[[i]])+0.5), ylab="Average R-effective", xlab="First recorded case", xaxt="n", yaxs="i")
+plot(NULL, xlim=c(0.5,length(average_R0)+0.5), ylim=c(0,2+0.5), ylab="Average R-effective", xlab="First recorded case date", xaxt="n", yaxs="i")
 
 for (i in 1:length(average_R0))
   my_vioplot(average_R0[[i]], bw=0.015, border=1:7, col=cols[i], at=i)
@@ -114,6 +131,8 @@ labs<-format(labs,
        "%b %y")
 labels <- c(as.character(labs))
 axis(1,at=seq(1, length(average_R0), by=1), labels = labels)
+
+##############
 # for 15 ...
 axis(1,at=seq(1, length(average_R0), by=1), labels = F)
 text(1:length(average_R0), par("usr")[1], labels=labels, srt=45, pos=1, xpd=TRUE,cex=0.5)
