@@ -57,3 +57,4 @@ plot(nfit)
 
 samples<-(rgamma(100,shape=gamfit$estimate[1],rate=gamfit$estimate[2]))
 hist(samples)
+

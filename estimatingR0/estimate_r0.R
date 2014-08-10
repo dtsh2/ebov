@@ -23,9 +23,10 @@ k =gamfit$estimate[1] # shape
 gmean =k/beta # mean
 # variancegam<- k * beta^2
 # sdgam<-variancegam^2
-genTime<-generation.time(type="gamma",c(mean=gmean,sd=k^2))
+#genTime<-generation.time(type="gamma",c(mean=gmean,sd=k^2))
+genTime<-generation.time(type="gamma",c(a=k,s=beta))
 plot(genTime,xlim=c(0,20))
-## seems wrong - discuss with JM
+## each seems wrong - discuss with JM
 
 sigma_logn <-lnfit$estimate[2]
 mu_logn    <-lnfit$estimate[1]
