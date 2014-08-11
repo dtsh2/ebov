@@ -1,4 +1,4 @@
-rm(list=ls())
+# rm(list=ls())
 ## Daves notes
 # compute generation time.  We're wanting a lognormal distribution with mean 12.0 and sd 3.5 from
 # http://www.sciencedirect.com/science/article/pii/S0022519311003146

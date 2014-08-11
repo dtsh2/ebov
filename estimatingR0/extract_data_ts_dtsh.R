@@ -71,11 +71,17 @@ tt$outbreak<-as.factor(tt$outbreak)
 library(plyr)
 tt<-tt[order(tt$date),]
 # for the epi work only - double check the #s
- oldob=c("0","16","18","17","1","8")
- newob=c("1","2","3","4","5","6")
+ oldob=c("0","16","18","17","1","8","15")
+ newob=c("1","2","3","4","5","6","7")
  tt$outbreak <- newob[ match(tt$outbreak, oldob) ]
 
 tt$date<-as.Date(tt[,1])#, format=date_format)
+sapply(tt$outbreak, function(x) length(unique(x)))
+barplot(tt[,3],col=c(as.numeric(tt$outbreak)),ylab="Cases per week",
+        xlab="Outbreak week")
+test<-format(tt$date,format="%Y")
+labels<-unique(test)
+legend("topleft",c(labels),bty="n",fill=c(as.numeric(unique(tt$outbreak))))
 
 for (i in 1:length(unique(tt$outbreak)))
 {
