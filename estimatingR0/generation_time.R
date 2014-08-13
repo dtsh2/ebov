@@ -11,16 +11,16 @@ colnames(dat)<-labels[2:7]
 sd1<-(7.3-6.3)/1.96
 hist(rnorm(56,mean=6.3,sd=sd1))
 sd2<-(8-6.2)/4
-hist(rnorm(56,mean=6.3,sd=sd2))
+hist(rnorm(5,mean=6.2,sd=sd2))
 sd3<-(21-12)/4
-hist(rnorm(56,mean=6.3,sd=sd3))
+hist(rnorm(425,mean=12,sd=sd3))
 sd4<-(21-6.3)/4
-hist(rnorm(56,mean=6.3,sd=sd4))
+hist(rnorm(318,mean=6.3,sd=sd4))
 
 f1<-(rnorm(56,mean=6.3,sd=sd1))
-f2<-(rnorm(56,mean=6.3,sd=sd2))
-f3<-(rnorm(56,mean=6.3,sd=sd3))
-f4<-(rnorm(56,mean=6.3,sd=sd4))
+f2<-(rnorm(5,mean=6.2,sd=sd2))
+f3<-(rnorm(425,mean=12,sd=sd3))
+f4<-(rnorm(318,mean=6.3,sd=sd4))
 
 res<-c(f1,f2,f3,f4)
 hist(res)
@@ -54,6 +54,7 @@ nfit<-fitdist(res1,distr="norm")
 nfit$aic
 summary(nfit)
 plot(nfit)
+####
 
 samples<-(rgamma(100,shape=gamfit$estimate[1],rate=gamfit$estimate[2]))
 hist(samples)

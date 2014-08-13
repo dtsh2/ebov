@@ -4,6 +4,7 @@ all <- read.csv("EbolaDataDTSH.csv")
 all <- read.csv("EbolaDataDTSHepi.csv")
 all <- read.csv("EbolaDataDTSHwho.csv")
 
+
 all$Date <- as.Date(all$Date,format="%d/%m/%Y")
 str(all)
 library(xts)
@@ -81,6 +82,7 @@ barplot(tt[,3],col=c(as.numeric(tt$outbreak)),ylab="Cases per week",
         xlab="Outbreak week")
 test<-format(tt$date,format="%Y")
 labels<-unique(test)
+## nb check below colours match - only works for epi curve data for now...
 legend("topleft",c(labels),bty="n",fill=c(as.numeric(unique(tt$outbreak))))
 
 for (i in 1:length(unique(tt$outbreak)))
@@ -93,9 +95,17 @@ for (i in 1:length(unique(tt$outbreak)))
   #f(outbreak)
 } 
 
+
+
 library(ggplot2)
 library(scales) # to access breaks/formatting functions
 
+
+ggplot(tt, aes(x=date, y=incidence,fill=outbreak)
+) + geom_bar(stat="identity")+
+  theme(legend.position="none")
+
+## for other ggplots..
 cols<- rainbow(length(unique(tt$outbreak)))
 ## nb notification_weeks is a factor and the below plot works with that, but not a time series
 #d<-list() # this doesn't work - do by hand
@@ -196,8 +206,3 @@ grid.arrange(d1, d2, d3, d4, ncol=4,widths=width[1:4])
 grid.arrange(d5 ,d6 ,d7, d8, ncol=4,widths=width[5:8])
 grid.arrange(d9, d10, d11, d12, ncol=4,widths=width[9:12])
 grid.arrange(d13, d14, d15, ncol=4,widths=width[13:15])
-
-ggplot(tt, aes(x=date, y=incidence,fill=outbreak)
-               ) + geom_bar(stat="identity")+
-  theme(legend.position="none")
-

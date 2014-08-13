@@ -111,6 +111,8 @@ jm_estR0 <- function (epid, GT, import = NULL, n.t0 = NULL, t = NULL, begin = NU
     }
     # JM: average over time
     R0 <- apply(R.simu.corrected, 2, mean)
+    # OR: average over cases?
+    R0 <- apply(R.simu.corrected, 2, function(x) { sum(x * epid.orig$incid) / sum(epid.orig$incid) })
 
     conf.int = matrix(data = NA, nrow = end.nb, ncol = length(q))
     colnames(conf.int) = q
