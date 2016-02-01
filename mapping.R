@@ -1,0 +1,192 @@
+rm(list=ls())
+
+require(doBy)
+require(plyr)
+require(rworldmap)
+require(TeachingDemos)
+require(ReadImages)
+
+dF <- getMap()@data  
+
+f_data<-read.csv("filo_data_wa.csv",header=T,stringsAsFactors=FALSE)
+ff_data<-subset(f_data,select=c("Country","Positive",
+                                "Number","Genus"))
+
+RES<-aggregate(. ~ Country+Genus, data=ff_data,FUN=sum)
+RES$Negative <-RES$Number-RES$Positive
+# 
+ebov<- RES[RES$Genus == "EBOV", ]
+marv<- RES[RES$Genus == "MARV", ]
+
+ebov$Country[2]<-"Burkina Faso"
+ebov$Country[4]<-"Central African Republic"
+ebov$Country[10]<-"Sierra Leone"
+
+marv$Country[2]<-"Central African Republic"
+marv$Country[6]<-"Sierra Leone"
+
+### plot for real
+#############
+
+theCountries <- c("BEN","BFA","CAF","CIV",
+                  "CMR","GHA","GIN","GMB",
+                  "GNB","LBR","NER","NGA",
+                  "SEN","SLE","TCD","TGO","MLI")
+
+# These are the ISO3 names of the countries you'd like to plot in red
+
+malDF <- data.frame(country = c("BEN","BFA","CAF","CIV",
+                                "CMR","GHA","GIN","GMB",
+                                "GNB","LBR","NER","NGA",
+                                "SEN","SLE","TCD","TGO","MLI"),
+                    West_Africa = rep(1,17))
+# malDF is a data.frame with the ISO3 country names plus a variable to
+# merge to the map data
+
+malMap <- joinCountryData2Map(malDF, joinCode = "ISO3",
+                              nameJoinColumn = "country")
+# This will join your malDF data.frame to the country map data
+
+mapCountryData(malMap, nameColumnToPlot="West_Africa", 
+               catMethod = "categorical",
+               mapTitle="",addLegend=F,
+               missingCountryCol = "wheat",
+               mapRegion="world",
+               xlim=c(-15,10),
+               ylim=c(-5,25),
+               oceanCol = "lightblue",
+               colourPalette = "terrain"
+)
+#               add=T)
+
+
+##### 4.1 merging with existing data
+sPDF <- joinCountryData2Map(ebov,
+                            joinCode = "NAME",
+                            nameJoinColumn = "Country")
+
+## This the data that we will plot
+dF <- sPDF@data
+
+### make our pie plot
+par(mai= c(0,0,0.6,0),
+    xaxs = "i",
+    yaxs = "i")
+
+mapPies(dF =dF,
+        nameX="LON",
+        nameY="LAT",
+        nameZs =c("Positive",
+                  "Negative"),#,
+        zColours=c("red",
+                   "green"
+        ),
+        symbolSize = 5,        
+        #oceanCol = "lightblue",
+        #        landCol = "wheat",
+        addSizeLegend=F,
+        addCatLegend=F,
+        mapRegion="world",
+        xlim=c(-15,10),
+        ylim=c(-5,25)
+        ,add=T)
+
+title(main=paste("Antibodies against Ebolavirus in West African people"),
+      cex=3)
+
+legend("bottomleft",#-180.1516,90,
+       legend=c("Antibody positive",
+                "Antibody negative"),
+       col=c("red",
+             "green"
+       ),
+       pch=16,
+       cex=0.8,
+       pt.cex=1.5,
+       bty="o",
+       box.lty=0,
+       horiz = F,
+       bg="#FFFFFF70")
+##
+##
+## Marv
+theCountries <- c("BEN","BFA","CAF","CIV",
+                  "CMR","GHA","GIN","GMB",
+                  "GNB","LBR","NER","NGA",
+                  "SEN","SLE","TCD","TGO","MLI")
+
+# These are the ISO3 names of the countries you'd like to plot in red
+
+malDF <- data.frame(country = c("BEN","BFA","CAF","CIV",
+                                "CMR","GHA","GIN","GMB",
+                                "GNB","LBR","NER","NGA",
+                                "SEN","SLE","TCD","TGO","MLI"),
+                    West_Africa = rep(1,17))
+# malDF is a data.frame with the ISO3 country names plus a variable to
+# merge to the map data
+
+malMap <- joinCountryData2Map(malDF, joinCode = "ISO3",
+                              nameJoinColumn = "country")
+# This will join your malDF data.frame to the country map data
+
+mapCountryData(malMap, nameColumnToPlot="West_Africa", 
+               catMethod = "categorical",
+               mapTitle="",addLegend=F,
+               missingCountryCol = "wheat",
+               mapRegion="world",
+               xlim=c(-15,10),
+               ylim=c(-5,25),
+               oceanCol = "lightblue",
+               colourPalette = "terrain"
+)
+#               add=T)
+
+
+##### 4.1 merging with existing data
+sPDF <- joinCountryData2Map(marv,
+                            joinCode = "NAME",
+                            nameJoinColumn = "Country")
+
+## This the data that we will plot
+dF <- sPDF@data
+
+### make our pie plot
+par(mai= c(0,0,0.6,0),
+    xaxs = "i",
+    yaxs = "i")
+
+mapPies(dF =dF,
+        nameX="LON",
+        nameY="LAT",
+        nameZs =c("Positive",
+                  "Negative"),#,
+        zColours=c("red",
+                   "green"
+        ),
+        symbolSize = 5,        
+        #oceanCol = "lightblue",
+        #        landCol = "wheat",
+        addSizeLegend=F,
+        addCatLegend=F,
+        mapRegion="world",
+        xlim=c(-15,10),
+        ylim=c(-5,25)
+        ,add=T)
+
+title(main=paste("Antibodies against Marburgvirus in West African people"),
+      cex=3)
+
+legend("bottomleft",#-180.1516,90,
+       legend=c("Antibody positive",
+                "Antibody negative"),
+       col=c("red",
+             "green"
+       ),
+       pch=16,
+       cex=0.8,
+       pt.cex=1.5,
+       bty="o",
+       box.lty=0,
+       horiz = F,
+       bg="#FFFFFF70")
+##
