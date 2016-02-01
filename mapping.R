@@ -4,11 +4,11 @@ require(doBy)
 require(plyr)
 require(rworldmap)
 require(TeachingDemos)
-require(ReadImages)
 
 dF <- getMap()@data  
 
-f_data<-read.csv("filo_data_wa.csv",header=T,stringsAsFactors=FALSE)
+f_data<-read.csv("filo_data_wa.csv",header=T,
+                 stringsAsFactors=FALSE, row.names = NULL)
 ff_data<-subset(f_data,select=c("Country","Positive",
                                 "Number","Genus"))
 
@@ -46,6 +46,8 @@ malDF <- data.frame(country = c("BEN","BFA","CAF","CIV",
 malMap <- joinCountryData2Map(malDF, joinCode = "ISO3",
                               nameJoinColumn = "country")
 # This will join your malDF data.frame to the country map data
+
+pdf("ebov.pdf", width=8, height=6)
 
 mapCountryData(malMap, nameColumnToPlot="West_Africa", 
                catMethod = "categorical",
@@ -108,7 +110,9 @@ legend("bottomleft",#-180.1516,90,
        horiz = F,
        bg="#FFFFFF70")
 ##
+dev.off()
 ##
+
 ## Marv
 theCountries <- c("BEN","BFA","CAF","CIV",
                   "CMR","GHA","GIN","GMB",
@@ -128,6 +132,8 @@ malDF <- data.frame(country = c("BEN","BFA","CAF","CIV",
 malMap <- joinCountryData2Map(malDF, joinCode = "ISO3",
                               nameJoinColumn = "country")
 # This will join your malDF data.frame to the country map data
+
+pdf("marv.pdf", width=8, height=6)
 
 mapCountryData(malMap, nameColumnToPlot="West_Africa", 
                catMethod = "categorical",
@@ -190,3 +196,40 @@ legend("bottomleft",#-180.1516,90,
        horiz = F,
        bg="#FFFFFF70")
 ##
+dev.off()
+
+##
+data_tot<-aggregate(f_data$Number~ f_data$Country,FUN=sum)
+data_tot$Country<-c("BEN","BFA","CMR","CAF","TCD","CIV",
+                  "GIN","LBR","NGA",
+                  "SEN","SLE")
+colnames(data_tot)<-c("C","Number","Country")
+data_tot<-data_tot[,-1]
+missing_dat <- data.frame(Country = c("GHA","GMB",
+                                "GNB","NER",
+                                "TGO","MLI"),
+                    Number = rep(0,6) 
+                                )
+dat<-rbind(data_tot,missing_dat)
+
+malMap <- joinCountryData2Map(dat, joinCode = "ISO3",
+nameJoinColumn = "Country")
+# This will join your malDF data.frame to the country map data
+pdf("tested.pdf", width=8, height=6)
+
+mapParams<-mapCountryData(malMap, nameColumnToPlot="Number", 
+                             catMethod = "categorical",
+                             mapTitle="People tested for filovirus antibodies",
+                              addLegend=F,
+                             missingCountryCol = "wheat",
+                             mapRegion="world",
+                             xlim=c(-15,20),
+                             ylim=c(-5,25),
+                             oceanCol = "lightblue",
+                             colourPalette = "heat"
+                    )
+                    #               add=T)
+
+#adding a modified legend by specifying extra parameters
+do.call( addMapLegendBoxes, c(mapParams,title="Numbers",cex=0.8))
+dev.off()
