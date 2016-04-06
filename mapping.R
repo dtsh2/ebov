@@ -81,7 +81,7 @@ mapPies(dF =dF,
         nameZs =c("Positive",
                   "Negative"),#,
         zColours=c("red",
-                   "green"
+                   "powderblue"
         ),
         symbolSize = 5,        
         #oceanCol = "lightblue",
@@ -100,7 +100,7 @@ legend("bottomleft",#-180.1516,90,
        legend=c("Antibody positive",
                 "Antibody negative"),
        col=c("red",
-             "green"
+             "powderblue"
        ),
        pch=16,
        cex=0.8,
@@ -167,7 +167,7 @@ mapPies(dF =dF,
         nameZs =c("Positive",
                   "Negative"),#,
         zColours=c("red",
-                   "green"
+                   "powderblue"
         ),
         symbolSize = 5,        
         #oceanCol = "lightblue",
@@ -186,7 +186,7 @@ legend("bottomleft",#-180.1516,90,
        legend=c("Antibody positive",
                 "Antibody negative"),
        col=c("red",
-             "green"
+             "powderblue"
        ),
        pch=16,
        cex=0.8,
