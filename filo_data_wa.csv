@@ -1,13 +1,17 @@
 Year,Country,Region,Positive,Number,Percent,Genus,Antigen,Reference
 1983,Benin,NONE,2,603,0.3,EBOV,SEBOV/ZEBOV,[995_996]
 1983,Burkina_Faso,NONE,0,992,0,EBOV,SEBOV/ZEBOV,[996]
+1979,Central_African_Republic,NA,10,499,2,EBOV,EBOV,
 1978-1979,Cameroon,Moloundou,51,821,6.2,EBOV,EBOV,[1141]
 1978-1979,Cameroon,Mbatika,20,70,29,EBOV,EBOV,[1141]
 YEAR,Cameroon,MANY,147,1517,9.7,EBOV,EBOV,[314_377]
 YEAR,Cameroon,MANY,NA,1517,0.6,MARV,MARV,[314_377]
+1984-1985,Central_African_Republic,NA,152,836,18.2,EBOV,EBOV,
+1984-1985,Central_African_Republic,NA,914,4295,21.3,EBOV,EBOV,
 1985,Cameroon,URBAN,7,375,1.9,EBOV,ZEBOV,[1956_1957]
 1986,Cameroon,Maroua,NA,379,12.8,EBOV,SEBOV,[1345]
 1986,Cameroon,Maroua,NA,379,7.7,EBOV,ZEBOV,[1345]
+1987,Central_African_Republic,NA,73,427,17.1,EBOV,EBOV,
 1993,Cote_d’Ivoire,Tai_National_Park,NA,257,NA,MARV,MARV,[998]
 1994,Cote_d’Ivoire,Tai_National_Park,NA,13,NA,EBOV,EBOV,[867_1718]
 1996,Cote_d’Ivoire,Tabou,NA,3300,NA,EBOV,EBOV,[867_1718]
@@ -33,4 +37,7 @@ YEAR,Togo,NA,NA,NA,NA,NA,NA,[998]
 1985-1987,Chad,N’Djamena,12,334,3.59,EBOV,EBOV,[997]
 1985-1987,Cameroon,Mora_Maroua_and_Nkongsamba,0,1152,0,MARV,MARV,[997]
 1985-1987,Central_African_Republic,Bangui,0,327,0,MARV,MARV,[997]
+1992-1997,Central_African_Republic,NA,92,1544,6,EBOV,EBOV,
+1992-1995,Central_African_Republic,NA,71,1331,5,EBOV,EBOV,
+1992-1995,Central_African_Republic,NA,33,1340,2,MARV,MARV,
 1985-1987,Chad,N’Djamena,1,334,0.3,MARV,MARV,[997]
